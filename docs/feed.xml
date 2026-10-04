@@ -1,0 +1,47 @@
+
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://0okomao0.github.io/</id>
+  <title>TechNotes</title>
+  <subtitle>Koma77の技術メモっぽいところ</subtitle>
+  <updated>2026-10-05T04:56:01+09:00</updated>
+  <author>
+    <name>koma77</name>
+    <uri>https://0okomao0.github.io/</uri>
+  </author>
+  <link rel="self" type="application/atom+xml" href="https://0okomao0.github.io/feed.xml"/>
+  <link rel="alternate" type="text/html" hreflang="en"
+    href="https://0okomao0.github.io/"/>
+  <generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator>
+  <rights> © 2026 koma77 </rights>
+  <icon>/assets/img/favicons/favicon.ico</icon>
+  <logo>/assets/img/favicons/favicon-96x96.png</logo>
+
+
+  
+  <entry>
+    <title>Post Page Test</title>
+    <link href="https://0okomao0.github.io/posts/post-page-test/" rel="alternate" type="text/html" title="Post Page Test" />
+    <published>2026-10-04T00:00:00+09:00</published>
+  
+    <updated>2026-10-04T00:00:00+09:00</updated>
+  
+    <id>https://0okomao0.github.io/posts/post-page-test/</id>
+    <content type="text/html" src="https://0okomao0.github.io/posts/post-page-test/" />
+    <author>
+      <name>koma77</name>
+    </author>
+
+  
+    
+    <category term="DeployTest" />
+    
+  
+
+  <summary>記事表示チェック</summary>
+
+  </entry>
+
+</feed>
+
+

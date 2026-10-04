@@ -1,0 +1,13 @@
+
+
+{
+  "name": "TechNotes",
+  "short_name": "TechNotes",
+  "description": "Koma77の技術メモっぽいところ",
+  "icons": [ ],
+  "start_url": "/index.html",
+  "theme_color": "#f6f8fa",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}
+
