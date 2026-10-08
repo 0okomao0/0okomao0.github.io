@@ -13,3 +13,18 @@
 ';
 
 /* append your custom style below */
+.post-content .img-link.shimmer::before {
+  animation: none !important;
+  background: transparent !important;
+  transform: none !important;
+}
+a.img-link.shimmer {
+  background: transparent !important;
+}
+
+a.img-link.shimmer::before {
+  content: none !important;
+  animation: none !important;
+  transform: none !important;
+  background: transparent !important;
+}
