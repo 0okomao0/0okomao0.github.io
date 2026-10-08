@@ -24,6 +24,30 @@
           "endsPattern": "^.*Server running\\.\\.\\..*$"
         }
       }
+    },
+    {
+      "label": "[Linux] Jekyll: Serve",
+      "type": "process",
+      "command": "/bin/bash",
+      "args": [
+        "-lc",
+        "bundle exec jekyll serve"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "jekyll",
+        "pattern": {
+          "regexp": "^$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.*Generating\\.\\.\\..*$",
+          "endsPattern": "^.*Server running\\.\\.\\..*$"
+        }
+      }
     }
   ]
 }
