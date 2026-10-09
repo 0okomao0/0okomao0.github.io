@@ -563,3 +563,44 @@ kbd {
     }
   }
 }
+
+@include bp.md {
+  article > header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .content {
+    h1 {
+      font-size: 1.55rem;
+      font-weight: 600;
+      line-height: 1.5;
+      margin: 2.5rem 0 1rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 1px solid var(--post-heading-accent);
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.5;
+      margin: 2rem 0 0.8rem;
+      padding-left: 0.6rem;
+      border-left: 3px solid var(--post-heading-accent);
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      line-height: 1.5;
+      margin: 1.5rem 0 0.6rem;
+    }
+
+    h4 {
+      font-weight: 600;
+      line-height: 1.5;
+      margin: 1.25rem 0 0.5rem;
+    }
+  }
+}
