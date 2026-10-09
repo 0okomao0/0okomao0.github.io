@@ -520,3 +520,46 @@ kbd {
   box-shadow: 1px 1px 2px rgba(0,0,0,0.5), 1px 1px 1px rgba(255,255,255,0.3) inset;
   white-space: pre-wrap;
 }
+
+@include bp.lt(bp.get(md)) {
+  article > header h1 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .content {
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1.45;
+      margin: 2.25rem 0 0.9rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 2px solid var(--post-heading-accent);
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.5;
+      margin: 2rem 0 0.75rem;
+      padding-left: 0.65rem;
+      border-left: 4px solid var(--post-heading-accent);
+      background-color: var(--post-heading-bg);
+    }
+
+    h3 {
+      font-size: 1.18rem;
+      font-weight: 700;
+      line-height: 1.5;
+      margin: 1.5rem 0 0.6rem;
+    }
+
+    h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.5;
+      margin: 1.25rem 0 0.5rem;
+    }
+  }
+}
