@@ -113,21 +113,21 @@ MiB Swap:      0.0 total,      0.0 free,      0.0 used.  57615.7 avail Mem
 実はここの表示項目は変えられたりする  
 (実際に、この例ではUSERNAMEをUIDに変更していたりする)
 
-1. 表示中に `f` キーを押す  
+1. 表示中に <kbd>f</kbd> キーを押す  
 すると「Fields Management」が表示される  
 ![topコマンド-Fields Management](/assets/img/posts/top-sc-fm.png)
-2. 表示したい項目を矢印キー `↑` `↓`で選択して、`d` キーを押す  
+2. 表示したい項目を <kbd>↑</kbd> <kbd>↓</kbd>で選択して、<kbd>d</kbd> を押す  
 すると `*`が項目の左側につく  
 ![topコマンド-Fields Management-有効化](/assets/img/posts/top-sc-fm-ena.png)
-3. 非表示したい項目を矢印キー `↑` `↓`で選択して、`d` キーを押す  
+3. 非表示したい項目を <kbd>↑</kbd> <kbd>↓</kbd>で選択して、<kbd>d</kbd> を押す  
 すると `*`が項目の左側から消える  
 ![topコマンド-Fields Management-無効化](/assets/img/posts/top-sc-fm-dis.png)
-4. 順番を変更したい項目を矢印キー `↑` `↓`で選択して、`→` キーを押す  
-すると選択した項目がハイライトされ、`↑` `↓`で移動させることができる  
+4. 順番を変更したい項目を <kbd>↑</kbd> <kbd>↓</kbd>で選択して、<kbd>→</kbd> を押す  
+すると選択した項目がハイライトされ、<kbd>↑</kbd> <kbd>↓</kbd>で移動させることができる  
 ![topコマンド-Fields Management-移動](/assets/img/posts/top-sc-fm-mov.png)  
-確定したい場合は `←`キーを押す  
+確定したい場合は <kbd>←</kbd> を押す  
 ![topコマンド-Fields Management-移動終了](/assets/img/posts/top-sc-fm-mov-end.png)
-5. `q` キーを押すと通常の `top`コマンド画面に戻る
+5. <kbd>q</kbd> を押すと通常の `top`コマンド画面に戻る
 
 # ひとこと
 topを開くだけで、CPU・メモリ・プロセスの状態を一目で確認できる  
