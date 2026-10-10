@@ -1,15 +1,11 @@
 ---
-title: Linuxコマンドを深掘り：top
+title: 「top」コマンドをちょっとだけ深堀り
 author: koma77
 date: 2026-09-01 00:00:00 +0900
-categories: [Linuxコマンドを深掘り]
+categories: [Linux]
 tags: [Linux]
 render_with_liquid: false
 ---
-
-# 「Linuxコマンドを深掘り」について
-普段なんとなく使っているコマンドの知らない一面を知るために、ちょっとだけ深掘りしてみたもの
-
 
 # 「top」について
 
