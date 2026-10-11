@@ -1,5 +1,5 @@
 ---
-title: 「top」コマンドをちょっとだけ深堀り
+title: 「top」コマンドの表示内容
 author: koma77
 date: 2026-09-01 00:00:00 +0900
 categories: [Linux]
