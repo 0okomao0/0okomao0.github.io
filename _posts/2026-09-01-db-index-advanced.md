@@ -241,7 +241,91 @@ mysql> SELECT TIMESTAMPDIFF(MICROSECOND, @started_at, NOW(6)) / 1000000 AS elaps
 今回のデータでは`created_at`が増加していく一方、`category_id`は1〜1000を繰り返す  
 単一インデックスの`created_at`は末尾方向への追加になりやすいが、複合インデックス`(category_id, created_at)`では先頭の`category_id`が繰り返し切り替わるため、複数のキー範囲に交互に書き込む動きになる
 
-ページ分割やディスクI/O、バッファプールの状態などが影響した可能性もあるため一概には言えない
+
+#### 補足：`category_id`を同じ値にして書き込み時間を比べる
+
+あまりにも書き込み時間に差が出来てしまったので、同じ1000万行を`category_id`だけ固定値`1000`にして実施してみる  
+なお、テーブルは書き込み性能を調べる前の状態（records/ records_with_index/ records_with_composite_index 全て同じ1000万行を保有）に戻してから実施した
+
+```sql
+mysql> SET @started_at = NOW(6);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO records (id, category_id, created_at, payload)
+    -> SELECT
+    ->   records.id + 10000000,
+    ->   1000,
+    ->   TIMESTAMP('2020-01-01 00:00:00') + INTERVAL (records.id + 10000000) SECOND,
+    ->   REPEAT('x', 100)
+    -> FROM records;
+Query OK, 10000000 rows affected (57.85 sec)
+Records: 10000000  Duplicates: 0  Warnings: 0
+
+mysql> SELECT TIMESTAMPDIFF(MICROSECOND, @started_at, NOW(6)) / 1000000 AS elapsed_seconds;
++-----------------+
+| elapsed_seconds |
++-----------------+
+|         57.8571 |
++-----------------+
+1 row in set (0.00 sec)
+```
+
+```sql
+mysql> SET @started_at = NOW(6);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO records_with_index (id, category_id, created_at, payload)
+    -> SELECT
+    ->   records.id + 10000000,
+    ->   1000,
+    ->   TIMESTAMP('2020-01-01 00:00:00') + INTERVAL (records.id + 10000000) SECOND,
+    ->   REPEAT('x', 100)
+    -> FROM records;
+Query OK, 10000000 rows affected (1 min 30.68 sec)
+Records: 10000000  Duplicates: 0  Warnings: 0
+
+mysql> SELECT TIMESTAMPDIFF(MICROSECOND, @started_at, NOW(6)) / 1000000 AS elapsed_seconds;
++-----------------+
+| elapsed_seconds |
++-----------------+
+|         90.6818 |
++-----------------+
+1 row in set (0.00 sec)
+```
+
+```sql
+mysql> SET @started_at = NOW(6);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO records_with_composite_index (id, category_id, created_at, payload)
+    -> SELECT
+    ->   records.id + 10000000,
+    ->   1000,
+    ->   TIMESTAMP('2020-01-01 00:00:00') + INTERVAL (records.id + 10000000) SECOND,
+    ->   REPEAT('x', 100)
+    -> FROM records;
+Query OK, 10000000 rows affected (1 min 23.91 sec)
+Records: 10000000  Duplicates: 0  Warnings: 0
+
+mysql> SELECT TIMESTAMPDIFF(MICROSECOND, @started_at, NOW(6)) / 1000000 AS elapsed_seconds;
++-----------------+
+| elapsed_seconds |
++-----------------+
+|         83.9069 |
++-----------------+
+1 row in set (0.00 sec)
+```
+
+今回の結果はこんな感じ
+
+| インデックス構成 | 追加行数 | INSERT所要時間 |
+| --- | ---: | ---: |
+| インデックスなし | 1000万行 | 約57.86秒 |
+| 単一インデックス2本 | 1000万行 | 約90.68秒 |
+| 複合インデックス1本 | 1000万行 | 約83.90秒 |
+
+流石にインデックスなしよりは時間がかかっているが、前回みたいな16分とかにはならなかった  
+インデックスを貼っている場合は読み取り（検索）条件だけでなく、書き込むデータにも配慮してあげないといけないんだなと実感した
 
 ### 注意点1：カラムの順序が重要
 
@@ -271,22 +355,3 @@ FROM records_with_composite_index
 WHERE created_at >= '2020-04-01 00:00:00'
   AND created_at <  '2020-04-02 00:00:00';
 ```
-
-
-# まとめ
-
-今回の計測で一番大事だったのは、複合インデックスが「圧倒的に速い」ことと、「速くなる代わりに書き込みに大きなコストがかかる」ことを同時に示せた点だと思う
-
-`category_id = 42` かつ `created_at` の範囲検索では、単一インデックス2本よりも複合インデックス1本のほうが圧倒的に速く、最初の1行が返るまでの時間も全件取得までの時間も大きく改善した
-それでも、複合インデックスを作るとインデックス容量が増え、INSERT時の性能が大きく落ちることもわかった
-
-今回の結果では、インデックスなしが約51.94秒、単一インデックス2本が約116.81秒、複合インデックス1本が約1018.58秒と、書き込み性能の差がとても大きかった
-この要因は、`created_at` は増加するのに対して `category_id` が1〜1000を繰り返すことにあり、複合インデックス`(category_id, created_at)`は先頭の `category_id` で範囲が切り替わるので、書き込み時に複数のキー領域へ分散してアクセスしやすくなるためだと考えられる
-
-だから、複合インデックスは「正しい検索条件に対してはとても強い」が、万能な解ではない
-`(category_id, created_at)` のような並び順なら、`category_id` から始まる条件には効くが、`created_at` だけでは使えない
-このカラム順は、実際のクエリパターンと検索の優先順位に合わせて設計しないと、せっかくのインデックスが活きない
-
-結論としては、インデックス設計は「読み取り速度」だけでなく「書き込み性能」「容量」「クエリの条件順序」を同時に見る必要がある、ということだと思う
-複合インデックスは特定の検索をかなり速くしてくれる一方で、書き込みが多い環境では逆に負担になる
-
